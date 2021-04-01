@@ -86,6 +86,11 @@ class PowerMonitoring:
           # If the battery is discharging, we can use this measurement
           # On C2: this is low by about 10-15%, probably mostly due to UNO draw not being factored in
           current_power = ((HARDWARE.get_battery_voltage() / 1000000) * (HARDWARE.get_battery_current() / 1000000))
+        elif (pandaState.pandaState.pandaType in [log.PandaState.PandaType.whitePanda, log.PandaState.PandaType.greyPanda]) and (pandaState.pandaState.current > 1):
+          # If white/grey panda, use the integrated current measurements if the measurement is not 0
+          # If the measurement is 0, the current is 400mA or greater, and out of the measurement range of the panda
+          # This seems to be accurate to about 5%
+          current_power = 5.28 * ((3.3 - (pandaState.pandaState.current * 3.3 / 4096)) / 8.25)
         elif (self.next_pulsed_measurement_time is not None) and (self.next_pulsed_measurement_time <= now):
           # TODO: Figure out why this is off by a factor of 3/4???
           FUDGE_FACTOR = 1.33

@@ -751,4 +751,12 @@ EVENTS: Dict[int, Dict[str, Union[Alert, Callable[[Any, messaging.SubMaster, boo
     ET.NO_ENTRY: NoEntryAlert("Cruise Fault: Restart the Car"),
   },
 
+  EventName.invalidGiraffeToyotaDEPRECATED: {
+    ET.PERMANENT: Alert(
+      "Unsupported Giraffe Configuration",
+      "Visit comma.ai/tg",
+      AlertStatus.normal, AlertSize.mid,
+      Priority.LOWER, VisualAlert.none, AudibleAlert.none, 0., 0., .2),
+  },
+ 
 }
