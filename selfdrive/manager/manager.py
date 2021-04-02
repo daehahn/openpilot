@@ -39,6 +39,7 @@ def manager_init():
     ("OpenpilotEnabledToggle", "1"),
     ("VisionRadarToggle", "0"),
     ("IsDriverViewEnabled", "0"),
+    ("DisengageOnGas", "1"), # daehahn - added a new feature to system toggle
   ]
 
   if params.get("RecordFrontLock", encoding='utf-8') == "1":
