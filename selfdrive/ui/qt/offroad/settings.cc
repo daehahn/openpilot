@@ -95,6 +95,13 @@ DevicePanel::DevicePanel(QWidget* parent) : QWidget(parent) {
                                    "Preview the driver facing camera to help optimize device mounting position for best driver monitoring experience. (vehicle must be off)",
                                    [=]() { Params().write_db_value("IsDriverViewEnabled", "1", 1); }));
 
+  offroad_btns.append(new ButtonControl("Reset CarParamsCache", "RESET",
+                                   "Fingerprint process using existed cached car parameters for old Pandas. You must reset if you want to use on the other cars.", [=]() {
+    if (ConfirmationDialog::confirm("Are you sure you want to reset CarParamsCache?")) {
+      Params().delete_db_value("CarParamsCache");
+    }
+  }));
+
   offroad_btns.append(new ButtonControl("Reset Calibration", "RESET",
                                    "openpilot requires the device to be mounted within 4° left or right and within 5° up or down. openpilot is continuously calibrating, resetting is rarely required.", [=]() {
     if (ConfirmationDialog::confirm("Are you sure you want to reset calibration?")) {
