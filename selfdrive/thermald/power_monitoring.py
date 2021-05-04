@@ -17,7 +17,7 @@ CAR_BATTERY_CAPACITY_uWh = 30e6
 CAR_CHARGING_RATE_W = 45
 
 VBATT_PAUSE_CHARGING = 11.0
-MAX_TIME_OFFROAD_S = 30*3600
+MAX_TIME_OFFROAD_S = 6*3600
 
 class PowerMonitoring:
   def __init__(self):
@@ -180,7 +180,7 @@ class PowerMonitoring:
 
     now = sec_since_boot()
     panda_charging = (pandaState.pandaState.usbPowerMode != log.PandaState.UsbPowerMode.client)
-    BATT_PERC_OFF = 10
+    BATT_PERC_OFF = 30
 
     should_shutdown = False
     # Wait until we have shut down charging before powering down
