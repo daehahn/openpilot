@@ -155,6 +155,12 @@ bool usb_connect() {
     LOGW("panda serial: %s", serial->c_str());
   } else { return false; }
 
+  // get panda type: [0 = UNKNOWN, WHITE, GREY, BLACK, PEDAL, UNO, DOS]
+  char panda_type = '0' + (char)(tmp_panda->get_hw_type());
+  if (panda_type != '0') {
+    params.put("PandaType", &panda_type, 1);
+  } else { return false; }
+
   // power on charging, only the first time. Panda can also change mode and it causes a brief disconneciton
 #ifndef __x86_64__
   if (!connected_once) {
