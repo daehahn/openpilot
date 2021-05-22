@@ -86,7 +86,7 @@ void Sidebar::update(const UIState &s) {
   if (s.sm->updated("deviceState") || s.sm->updated("pandaState")) {
     battery_state = s.scene.deviceState.getBatteryStatus() == "Charging" ? 1 : 0;
     battery_percent = s.scene.deviceState.getBatteryPercent();
-    network_address = deviceState.getWifiIpAddress().cStr();
+    network_address = s.scene.deviceState.getNetworkAddress().cStr();
     repaint();
   }
 }
