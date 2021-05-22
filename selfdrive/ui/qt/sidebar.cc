@@ -115,7 +115,7 @@ void Sidebar::paintEvent(QPaintEvent *event) {
 
   // battery percent
   if (battery_percent <= 1) return;
-  QRect  rect(160, 240, 76, 36);
+  QRect  rect(160, 254, 76, 36);
   QRect  bq(rect.left() + 6, rect.top() + 5, int((rect.width() - 19) * battery_percent * 0.01), rect.height() - 11 );
   QBrush bgBrush("#149948");
   p.fillRect(bq, bgBrush);  
