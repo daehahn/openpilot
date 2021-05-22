@@ -123,5 +123,5 @@ void Sidebar::paintEvent(QPaintEvent *event) {
   // battery image
   QString file = "../assets/images/battery";
   file.append(battery_state ? "_charging.png" : ".png");
-  p.drawImage(rect, file);  
+  p.drawImage(rect, QImage(file));
 }
