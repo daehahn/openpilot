@@ -288,7 +288,7 @@ struct DeviceState @0xa4d8b5af2aa492eb {
   started @11 :Bool;
   startedMonoTime @13 :UInt64;
 
-  networkAddress @32 :Text;
+  networkAddress @31 :Text;
 
   # power
   batteryPercent @8 :Int16;
