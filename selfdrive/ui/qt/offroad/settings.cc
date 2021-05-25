@@ -73,6 +73,13 @@ TogglesPanel::TogglesPanel(QWidget *parent) : QWidget(parent) {
                                    "../assets/offroad/icon_road.png",
                                    this));
 
+  // DAEHAHN - added a new feature to system toggle
+  toggles.append(new ParamControl("EnableGasPedal",  
+                                  "Enable to use Gas Pedal",
+                                  "Enable to use gas pedal while Openpilot engaged.",
+                                  "../assets/offroad/icon_openpilot.png",
+                                  this));                                   
+
   if (Hardware::TICI()) {
     toggles.append(new ParamControl("EnableWideCamera",
                                     "Enable use of Wide Angle Camera",
