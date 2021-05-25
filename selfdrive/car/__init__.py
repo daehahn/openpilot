@@ -1,5 +1,6 @@
 # functions common among cars
 from common.numpy_fast import clip
+from common.params import Params
 
 # kg of standard extra cargo to count for drive, gas, etc...
 STD_CARGO_KG = 136.
@@ -121,3 +122,18 @@ def create_gas_command(packer, gas_amount, idx):
 
 def make_can_msg(addr, dat, bus):
   return [addr, 0, dat, bus]
+
+
+def is_ecu_disconnected(fingerprint, fingerprint_list, ecu_fingerprint_list):
+  # check if a stock ecu is disconnected by looking for specific CAN msgs in the fingerprint
+  # return True if the reference car fingerprint contains the ecu fingerprint msg and
+  # fingerprint does not contains messages normally sent by a given ecu
+  if Params().get("PandaType", encoding='utf8') > "2": # [0 = UNKNOWN, WHITE, GREY, BLACK, PEDAL, UNO, DOS]
+    return True
+    
+  ecu_in_car = False
+  for car_finger in fingerprint_list:
+    if any(msg in car_finger for msg in ecu_fingerprint_list):
+      ecu_in_car = True
+
+  return ecu_in_car and not any(msg in fingerprint for msg in ecu_fingerprint_list)

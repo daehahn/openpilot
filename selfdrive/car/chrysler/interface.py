@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 from cereal import car
-from selfdrive.car.chrysler.values import CAR
-from selfdrive.car import STD_CARGO_KG, scale_rot_inertia, scale_tire_stiffness, gen_empty_fingerprint
+from selfdrive.car.chrysler.values import CAR, FINGERPRINTS
+from selfdrive.car import STD_CARGO_KG, scale_rot_inertia, scale_tire_stiffness, gen_empty_fingerprint, is_ecu_disconnected
 from selfdrive.car.interfaces import CarInterfaceBase
 
 
@@ -49,7 +49,8 @@ class CarInterface(CarInterfaceBase):
     # mass and CG position, so all cars will have approximately similar dyn behaviors
     ret.tireStiffnessFront, ret.tireStiffnessRear = scale_tire_stiffness(ret.mass, ret.wheelbase, ret.centerToFront)
 
-    ret.enableCamera = True
+    # ECU_FINGERPRINT = { Ecu.fwdCamera: [0x292], } # lkas cmd
+    ret.enableCamera = is_ecu_disconnected(fingerprint[0], FINGERPRINTS[candidate], [0x292])
     
     ret.enableBsm = 720 in fingerprint[0]
 
