@@ -161,6 +161,7 @@ std::unordered_map<std::string, uint32_t> keys = {
     {"ControlsReady", CLEAR_ON_MANAGER_START | CLEAR_ON_PANDA_DISCONNECT | CLEAR_ON_IGNITION_ON},
     {"CurrentRoute", CLEAR_ON_MANAGER_START | CLEAR_ON_IGNITION_ON},
     {"DisableRadar", PERSISTENT}, // WARNING: THIS DISABLES AEB
+    {"EnableGasPedal", PERSISTENT},  
     {"EndToEndToggle", PERSISTENT},
     {"CompletedTrainingVersion", PERSISTENT},
     {"DisablePowerDown", PERSISTENT},
