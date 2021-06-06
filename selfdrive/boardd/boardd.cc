@@ -38,6 +38,7 @@
 #define NIBBLE_TO_HEX(n) ((n) < 10 ? (n) + '0' : ((n) - 10) + 'a')
 
 Panda * panda = nullptr;
+char panda_type = '\0';
 std::atomic<bool> safety_setter_thread_running(false);
 std::atomic<bool> ignition(false);
 
@@ -156,7 +157,7 @@ bool usb_connect() {
   } else { return false; }
 
   // get panda type: [0 = UNKNOWN, WHITE, GREY, BLACK, PEDAL, UNO, DOS]
-  char panda_type = '0' + (char)(tmp_panda->get_hw_type());
+  panda_type = '0' + (char)(tmp_panda->get_hw_type());
   if (panda_type != '0') {
     params.put("PandaType", &panda_type, 1);
   } else { return false; }
@@ -582,7 +583,8 @@ int main() {
       threads.push_back(std::thread(can_send_thread, getenv("FAKESEND") != nullptr));
       threads.push_back(std::thread(can_recv_thread));
       threads.push_back(std::thread(hardware_control_thread));
-      threads.push_back(std::thread(pigeon_thread));
+      if (panda_type > '1')  // get panda type: ['0' = UNKNOWN, WHITE, GREY, BLACK, PEDAL, UNO, DOS]
+        threads.push_back(std::thread(pigeon_thread));
     }
 
     for (auto &t : threads) t.join();
