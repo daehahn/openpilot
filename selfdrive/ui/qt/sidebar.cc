@@ -88,6 +88,11 @@ void Sidebar::updateState(const UIState &s) {
   }
   setProperty("pandaStr", pandaStr);
   setProperty("pandaStatus", pandaStatus);
+
+  int batteryState = deviceState.getBatteryStatus() == "Charging" ? 1 : 0;
+  int batteryPercent = deviceState.getBatteryPercent();
+  setProperty("batteryState", batteryState);
+  setProperty("batteryPercent", batteryPercent);  
 }
 
 void Sidebar::paintEvent(QPaintEvent *event) {
@@ -112,4 +117,12 @@ void Sidebar::paintEvent(QPaintEvent *event) {
   drawMetric(p, "TEMP", QString("%1°C").arg(temp_val), temp_status, 338);
   drawMetric(p, panda_str, "", panda_status, 518);
   drawMetric(p, "CONNECT\n" + connect_str, "", connect_status, 676);
+
+  // battery icon
+  QRect  bf(160, r.top() + 7, 76, 36);
+  QRect  bg(bf.left() + 6, bf.top() + 5, int((bf.width() - 19) * battery_percent * 0.01), bf.height() - 11 );
+  QString image = "../assets/images/battery";
+  image.append(battery_state ? "_charging.png" : ".png");
+  p.fillRect(bg, QColor(battery_state ? "#149948" : "#ffffff"));
+  p.drawImage(bf, QImage(image));  
 }
