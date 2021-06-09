@@ -4,8 +4,8 @@ from cereal import car
 from common.numpy_fast import clip, interp
 from selfdrive.swaglog import cloudlog
 from selfdrive.config import Conversions as CV
-from selfdrive.car.honda.values import CruiseButtons, CAR, HONDA_BOSCH, HONDA_BOSCH_ALT_BRAKE_SIGNAL
-from selfdrive.car import STD_CARGO_KG, CivicParams, scale_rot_inertia, scale_tire_stiffness, gen_empty_fingerprint
+from selfdrive.car.honda.values import CruiseButtons, CAR, HONDA_BOSCH, HONDA_BOSCH_ALT_BRAKE_SIGNAL, FINGERPRINTS
+from selfdrive.car import STD_CARGO_KG, CivicParams, scale_rot_inertia, scale_tire_stiffness, gen_empty_fingerprint, is_ecu_disconnected
 from selfdrive.controls.lib.longitudinal_planner import _A_CRUISE_MAX_V_FOLLOWING
 from selfdrive.car.interfaces import CarInterfaceBase
 
@@ -122,12 +122,14 @@ class CarInterface(CarInterfaceBase):
 
     if candidate in HONDA_BOSCH:
       ret.safetyModel = car.CarParams.SafetyModel.hondaBoschHarness
-      ret.enableCamera = True
+      # ECU_FINGERPRINT = { Ecu.fwdCamera: [0xE4, 0x194] }  # steer torque cmd
+      ret.enableCamera = is_ecu_disconnected(fingerprint[0], FINGERPRINTS[candidate], [0xE4, 0x194])
       ret.radarOffCan = True
       ret.openpilotLongitudinalControl = False
     else:
       ret.safetyModel = car.CarParams.SafetyModel.hondaNidec
-      ret.enableCamera = True
+      # ECU_FINGERPRINT = { Ecu.fwdCamera: [0xE4, 0x194] }  # steer torque cmd
+      ret.enableCamera = is_ecu_disconnected(fingerprint[0], FINGERPRINTS[candidate], [0xE4, 0x194])
       ret.enableGasInterceptor = 0x201 in fingerprint[0]
       ret.openpilotLongitudinalControl = ret.enableCamera
 

@@ -2,8 +2,8 @@
 from cereal import car
 from selfdrive.swaglog import cloudlog
 from selfdrive.config import Conversions as CV
-from selfdrive.car.ford.values import MAX_ANGLE
-from selfdrive.car import STD_CARGO_KG, scale_rot_inertia, scale_tire_stiffness, gen_empty_fingerprint
+from selfdrive.car.ford.values import MAX_ANGLE, FINGERPRINTS
+from selfdrive.car import STD_CARGO_KG, scale_rot_inertia, scale_tire_stiffness, gen_empty_fingerprint, is_ecu_disconnected
 from selfdrive.car.interfaces import CarInterfaceBase
 
 
@@ -43,7 +43,8 @@ class CarInterface(CarInterfaceBase):
 
     ret.steerControlType = car.CarParams.SteerControlType.angle
 
-    ret.enableCamera = True
+    # ECU_FINGERPRINT = { Ecu.fwdCamera: [970, 973, 984] }
+    ret.enableCamera = is_ecu_disconnected(fingerprint[0], FINGERPRINTS[candidate], [970, 973, 984])
     cloudlog.warning("ECU Camera Simulated: %r", ret.enableCamera)
 
     return ret

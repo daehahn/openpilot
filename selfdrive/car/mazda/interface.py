@@ -73,7 +73,8 @@ class CarInterface(CarInterfaceBase):
     ret.tireStiffnessFront, ret.tireStiffnessRear = scale_tire_stiffness(ret.mass, ret.wheelbase, ret.centerToFront,
                                                                          tire_stiffness_factor=tire_stiffness_factor)
 
-    ret.enableCamera = True
+    # ECU_FINGERPRINT = { Ecu.fwdCamera: [579] }  # from 0.8.5 FINGERPRINTS deleted 
+    ret.enableCamera = True # is_ecu_disconnected(fingerprint[0], FINGERPRINTS[candidate], [579])
 
     return ret
 

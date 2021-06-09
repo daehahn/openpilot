@@ -1,4 +1,5 @@
 from cereal import car
+from common.params import Params
 from collections import defaultdict
 from common.numpy_fast import interp
 from opendbc.can.can_define import CANDefine
@@ -367,9 +368,14 @@ class CarState(CarStateBase):
 
     return ret
 
+  def has_relay(self):
+    if not hasattr(has_relay, "has_relay"):
+      has_relay.has_relay = Params().get("PandaType", encoding='utf8') > "2" # [0 = UNKNOWN, WHITE, GREY, BLACK, PEDAL, UNO, DOS]
+    return has_relay.has_relay
+
   def get_can_parser(self, CP):
     signals, checks = get_can_signals(CP, self.gearbox_msg)
-    bus_pt = 1 if CP.carFingerprint in HONDA_BOSCH else 0
+    bus_pt = 1 if has_relay() and CP.carFingerprint in HONDA_BOSCH else 0
     return CANParser(DBC[CP.carFingerprint]["pt"], signals, checks, bus_pt)
 
   @staticmethod
@@ -395,7 +401,8 @@ class CarState(CarStateBase):
         ("BRAKE_COMMAND", 50),
       ]
 
-    return CANParser(DBC[CP.carFingerprint]["pt"], signals, checks, 2)
+    bus_cam = 1 if CP.carFingerprint in HONDA_BOSCH and not has_relay() else 2
+    return CANParser(DBC[CP.carFingerprint]["pt"], signals, checks, bus_cam)
 
   @staticmethod
   def get_body_can_parser(CP):
