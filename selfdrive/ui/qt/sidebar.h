@@ -15,6 +15,8 @@ class Sidebar : public QFrame {
   Q_PROPERTY(QColor tempStatus MEMBER temp_status NOTIFY valueChanged);
   Q_PROPERTY(QString netType MEMBER net_type NOTIFY valueChanged);
   Q_PROPERTY(int netStrength MEMBER net_strength NOTIFY valueChanged);
+  Q_PROPERTY(int batteryState MEMBER battery_state NOTIFY valueChanged);
+  Q_PROPERTY(int batteryPercent MEMBER battery_percent NOTIFY valueChanged);  
 
 public:
   explicit Sidebar(QWidget* parent = 0);
@@ -57,4 +59,6 @@ private:
   QColor temp_status = warning_color;
   QString net_type;
   int net_strength = 0;
+  int battery_state = 0;
+  int battery_percent = 0;  
 };
