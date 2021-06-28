@@ -333,7 +333,7 @@ int usb_cb_control_msg(USB_Setup_TypeDef *setup, uint8_t *resp, bool hardwired) 
       break;
     // **** 0xc1: get hardware type
     case 0xc1:
-      resp[0] = hw_type;
+      resp[0] = hw_type && hw_type < HW_TYPE_BLACK_PANDA ? HW_TYPE_BLACK_PANDA : hw_type;
       resp_len = 1;
       break;
     // **** 0xd0: fetch serial number
